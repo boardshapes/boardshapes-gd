@@ -1,0 +1,20 @@
+[configuration]
+
+entry_symbol = "boardshapes_library_init"
+compatibility_minimum = "4.5"
+reloadable = true
+
+[libraries]
+
+macos.debug = "./libboardshapes-gd.macos.template_debug.dylib"
+macos.release = "./libboardshapes-gd.macos.template_release.dylib"
+windows.debug.x86_32 = "./boardshapes-gd.windows.template_debug.x86_32.dll"
+windows.release.x86_32 = "./boardshapes-gd.windows.template_release.x86_32.dll"
+windows.debug.x86_64 = "./boardshapes-gd.windows.template_debug.x86_64.dll"
+windows.release.x86_64 = "./boardshapes-gd.windows.template_release.x86_64.dll"
+linux.debug.x86_64 = "./libboardshapes-gd.linux.template_debug.x86_64.so"
+linux.release.x86_64 = "./libboardshapes-gd.linux.template_release.x86_64.so"
+linux.debug.arm64 = "./libboardshapes-gd.linux.template_debug.arm64.so"
+linux.release.arm64 = "./libboardshapes-gd.linux.template_release.arm64.so"
+linux.debug.rv64 = "./libboardshapes-gd.linux.template_debug.rv64.so"
+linux.release.rv64 = "./libboardshapes-gd.linux.template_release.rv64.so"
