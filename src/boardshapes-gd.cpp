@@ -295,47 +295,47 @@ void BoardshapesData::load_from_binary(PackedByteArray data)
       ERR_FAIL_MSG(vformat("Unknown chunk type %d", chunkNumber));
       break;
     }
+  }
 
-    // create images from masks
-    for (auto &&kv : shapeMasks)
+  // create images from masks
+  for (auto &&kv : shapeMasks)
+  {
+    auto mask = kv.value;
+    auto shape = shapesMap[kv.key];
+    Color color = shape->color;
+
+    Vector2i size = mask->get_size();
+    Ref<Image> image = Image::create(size.x, size.y, false, Image::FORMAT_RGBA8);
+
+    for (size_t i = 0; i < size.x; i++)
     {
-      auto mask = kv.value;
-      auto shape = shapesMap[kv.key];
-      Color color = shape->color;
-
-      Vector2i size = mask->get_size();
-      Ref<Image> image = Image::create(size.x, size.y, false, Image::FORMAT_RGB8);
-
-      for (size_t i = 0; i < size.x; i++)
+      for (size_t j = 0; j < size.y; j++)
       {
-        for (size_t j = 0; j < size.y; j++)
-        {
-          image->set_pixel(i, j, color);
-        }
-      }
-
-      shape->image = image;
-    }
-
-    // add color name strings
-    for (auto &&kv : shapesMap)
-    {
-      auto shape = kv.value;
-      if (colorTable.has(shape->color))
-      {
-        shape->color_string = colorTable[shape->color];
+        image->set_pixel(i, j, mask->get_bit(i, j) ? color : Color(0.0f, 0.0f, 0.0f, 0.0f));
       }
     }
 
-    shapes = TypedArray<Ref<ShapeData>>{};
-    shapes.resize(shapesMap.size());
+    shape->image = image;
+  }
 
-    auto iMap = shapesMap.begin();
-    size_t mapSize = shapesMap.size();
-    for (size_t i = 0; i < mapSize; i++, ++iMap)
+  // add color name strings
+  for (auto &&kv : shapesMap)
+  {
+    auto shape = kv.value;
+    if (colorTable.has(shape->color))
     {
-      shapes[i] = iMap->value;
+      shape->color_string = colorTable[shape->color];
     }
+  }
+
+  shapes = TypedArray<Ref<ShapeData>>{};
+  shapes.resize(shapesMap.size());
+
+  auto iMap = shapesMap.begin();
+  size_t mapSize = shapesMap.size();
+  for (size_t i = 0; i < mapSize; i++, ++iMap)
+  {
+    shapes[i] = iMap->value;
   }
 }
 
